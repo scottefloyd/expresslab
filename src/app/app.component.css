@@ -3,6 +3,38 @@ h1 {
   color: #d83f87;
   font-weight: bold;
 }
+form {
+  
+  padding: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  
+    justify-content: center;
+}
+
+button {
+  color: #fff;
+  font-size: 14px;
+  border-radius: 0;
+  background-color: #d83f87;
+  border: none;
+  padding: 5px;
+  margin: 5px;
+}
+
+form.update {
+  width: 600px;
+}
+
+input {
+  padding: 5px;
+  margin: 8px;
+}
+
+label {
+  padding: 0 8px;
+}
 
 h2 {
   font-family: "Neucha", cursive;
@@ -14,17 +46,23 @@ h3 {
   font-size: 24px;
   color: #d83f87;
 }
-h3.title {display: inline;}
+h3.title {
+  display: inline;
+}
 
-.price {float: right;}
+.price {
+  float: right;
+}
 
 .weird {
-  color: #A4B3B6;
+  color: #a4b3b6;
   font-size: 28px;
   margin-bottom: 35px;
 }
 
-
+input {
+  padding-right: 5px;
+}
 
 header {
   text-align: center;
@@ -41,8 +79,7 @@ section {
 }
 
 .item {
-  width: 400px;
+  width: 550px;
   border-radius: 15px;
   margin-bottom: 25px;
-
 }

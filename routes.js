@@ -1,55 +1,49 @@
 "use strict";
-
 const express = require("express");
-const items = express.Router(); 
+const items = express.Router();
+const pool = require("./pg-connection-pool");
 
+function selectAll(res) {
+  pool
+    .query("select * from ShoppingCart order by id")
+    .then(result => res.json(result.rows));
+}
 
-const cartItems = [
-  {
-    id: 1,
-    product: "Unicorn horn",
-    price: 125,
-    quantity: 10
-  },
-  {
-    id: 2,
-    product: "Bug attractant",
-    price: 4.99,
-    quantity: 20
-  },
-  {
-    id: 3,
-    product: "Leather socks",
-    price: 25.99,
-    quantity: 5
-  }
-]; 
+items.get("/cart-items", (req, res) => {
+  selectAll(res);
+});
 
-  items.get("/cart-items", (req, res) => {
-    res.json(cartItems);
-    console.log(body);
-    
-  });
+items.post("/cart-items", (req, res) => {
+  pool
+    .query("insert into ShoppingCart(product, price, quantity) values ($1::text, $2::real, $3::int)", [
+      req.body.product,
+      req.body.price,
+      req.body.quantity
+    ]).then(() => {
+      selectAll(res);
+    });
+});
 
-  // accept POST request at URI: /students
-  items.post("/cart-items", (req, res) => {
-    console.log(body);
-    res.json(cartItems);
-  });
+items.put("/cart-items/:id", (req, res) => {
+  pool 
+    .query("update ShoppingCart set product=$1::text, price=$2::real, quantity=$3::int where id=$4::int", [
+      req.body.product,
+      req.body.price,
+      req.body.quantity, 
+      Number(req.params.id)
+    ]).then(() => {
+      selectAll(res);
+    });
 
-  // accept PUT request at URI: /students
-  items.put("/cart-items/:id", (req, res) => {
-  //res.json();
-  console.log(req.params.id);
-  console.log(body);
-  res.json(cartItems);
-  });
+});
 
-  // accept DELETE request at URI: /students
-  items.delete("/cart-items/:id", (req, res) => {
-    console.log(req.params.id);
-    
-  res.json(cartItems);
-  });
+items.delete("/cart-items/:id", (req, res) => {
+  
+  pool.query("delete from ShoppingCart where id=$1::int", [Number(req.params.id)]) 
+      .then(() => {
+      selectAll(res);
+      });
 
-  module.exports = items;
+});
+
+module.exports = items;

@@ -2,12 +2,36 @@
   <h1>Express Your Weird</h1>
   <h2>bizarre goods only a weirdo can appreciate</h2>
 </header>
-
+<form #addProduct="ngForm" (ngSubmit)="addItem(addProduct.form)">
+  <label for="">Product Name: </label>
+  <input type="text" ngModel name="product" />
+  <label for="">Price:</label>
+  <input type="number" ngModel name="price" />
+  <label for="">Quantity:</label>
+  <input type="number" ngModel name="quantity" />
+  <button>Add Product</button>
+</form>
 <section>
   <h2 class="weird">Our Weird Stuff</h2>
-  <div class="item" *ngFor="let item of cartItems">
+  <div class="item" *ngFor="let item of items; index as i">
     <h3 class="title">{{ item.product }}</h3>
     <span class="price">Price: ${{ item.price }}</span>
     <p class="quantity">Quantity: {{ item.quantity }}</p>
+    <button (click)="removeItem(item.id)">Remove</button>
+    <button (click)="toggleForm(i)">Update</button>
+    <form class="update"
+  *ngIf="item.updatingItem"
+  #updateForm="ngForm"
+  (ngSubmit)="[updateItem(item), toggleForm(i)]"
+>
+  <label for="">Product</label>
+  <input type="text" [(ngModel)]="item.product" name="product" />
+  <label for="">Price</label>
+  <input type="text" [(ngModel)]="item.price" name="price" />
+  <label for="">Quantity</label>
+  <input type="text" [(ngModel)]="item.quantity" name="quantity" />
+  <button>Update</button>
+</form>
   </div>
+  
 </section>
